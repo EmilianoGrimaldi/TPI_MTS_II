@@ -1,0 +1,32 @@
+[
+    {
+        "id": 101,
+        "legajo": "L-45890",
+        "nombre_estudiante": "Ana Perez",
+        "email": "ana.perez@tup.utn.edu.ar",
+        "carrera": "TUP",
+        "tipo": "EQUIVALENCIA",
+        "descripcion": "Equivalencia de Programacion I",
+        "prioridad": 2,
+        "estado": "PENDIENTE",
+        "responsable": "SIN_ASIGNAR",
+        "area": "NINGUNA",
+        "fecha": "2026-11-07 17:00:08",
+        "obs": ""
+    },
+    {
+        "id": 102,
+        "legajo": "L-46120",
+        "nombre_estudiante": "Lucas Gomez",
+        "email": "lucas.gomez@tup.utn.edu.ar",
+        "carrera": "TUP",
+        "tipo": "REVISION_ACTA",
+        "descripcion": "Nota de examen final no reflejada en acta",
+        "prioridad": 1,
+        "estado": "RESUELTA",
+        "responsable": "Carlos Ruiz",
+        "area": "Secretaria Academica",
+        "fecha": "2026-11-07 17:00:08",
+        "obs": "Acta rectificada correctamente"
+    }
+]
