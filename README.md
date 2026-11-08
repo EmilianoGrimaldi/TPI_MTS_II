@@ -1,49 +1,53 @@
-# Sistema de Gestión de Solicitudes Académicas
+# Sistema de Gestión de Solicitudes Académicas — TPI Metodología de Sistemas II
 
-> **Asignatura:** Metodología de Sistemas II  
-> **Carrera:** Tecnicatura Universitaria en Programación a Distancia (UTN)  
-> **Comisión:** 12  
-> **Alumno:** Grimaldi Emiliano (Matrícula: 102964)  
-> **Hito Actual:** `etapa-refactoring` (Evolución arquitectónica y Refactoring seguro)
+> **Universidad:** Universidad Tecnológica Nacional (UTN)  
+> **Carrera:** Tecnicatura Universitaria en Programación a Distancia (TUPaD)  
+> **Asignatura:** Metodología de Sistemas II — Comisión 12  
+> **Integrante (Entrega Individual):** Grimaldi, Emiliano — Matrícula: 102964  
+> **Estado General del Código:** `estado-refactorizado` (Calidad en Verde — 0% Regresión)
 
 ---
 
 ## 1. Descripción del Proyecto
 
-Módulo de software diseñado para centralizar la gestión de trámites estudiantiles (equivalencias, certificados de examen, cambios de comisión y revisiones de actas) en una institución universitaria.
+El **Sistema de Gestión de Solicitudes Académicas** es un módulo de software diseñado para centralizar la recepción, clasificación por prioridad, asignación de responsables, transición de estados y generación de reportes de trámites estudiantiles (equivalencias, certificados de examen, cambios de comisión y revisiones de actas).
 
-El propósito central de este repositorio es evidenciar la **evolución profesional de un sistema existente**: partiendo de un prototipo base funcional pero con alta deuda técnica interna (`estado-inicial`), hasta alcanzar una arquitectura desacoplada, testeable y mantenible mediante refactorings seguros respaldados por principios SOLID y Clean Code (`etapa-refactoring`), garantizando **0% de regresión funcional**.
-
----
-
-## 2. Tecnologías y Herramientas
-
-- **Lenguaje:** Python 3.11+ (con tipado estático `typing`, enumeraciones `Enum` y `@dataclass`).
-- **Persistencia:** Almacenamiento estructurado en archivo JSON local (`solicitudes_db.json`).
-- **Análisis Estático y Calidad:** `pylint` (estilo y detección de smells) y `radon` (complejidad ciclomática).
-- **Gobernanza Git:** Tags semánticos de evolución (`estado-inicial`, `etapa-diagnostico`, `etapa-refactoring`).
+El propósito de este repositorio es demostrar la **evolución profesional de un sistema existente**: partiendo de una versión base monolítica funcional pero con deuda técnica interna (`estado-inicial`), hasta alcanzar una arquitectura desacoplada, mantenible y extensible mediante **principios SOLID**, **Clean Code**, **Refactoring Seguro**, **pruebas automatizadas bajo el patrón AAA** y **Code Review profesional** (`estado-refactorizado`).
 
 ---
 
-## 3. Comparación Arquitectónica: Versión Base vs. Refactorizada
+## 2. Funcionalidades Verificables (Casos de Uso)
 
-| Aspecto | Versión Base (`sistema_solicitudes_base.py`) | Versión Refactorizada (`sistema_solicitudes_refactorizado.py`) |
-| :--- | :--- | :--- |
-| **Diseño / Cohesión** | Monolito (`GestorTotalSolicitudes`) con 7 responsabilidades mezcladas. | Arquitectura modular desacoplada cumpliendo **SRP**. |
-| **Manejo del Estado** | Variable global mutable (`solicitudes_memoria`) acoplada a disco. | **Cero variables globales**; inyección de dependencias por constructor (**DIP**). |
-| **Tipado y Dominio** | Obsesión por primitivos (`dict` plano, strings y números mágicos `1, 2, 3`). | Clases de dominio inmutables (`Estudiante`, `Solicitud`) y `Enum` con comportamiento. |
-| **Firmas de Métodos** | Firma frágil con 8 argumentos posicionales en el alta. | **Parameter Object** (`DatosAltaSolicitud`, `FiltroBusquedaSolicitud`). |
-| **Reglas de Prioridad** | Condicionales rígidos `if/elif/else` que violan OCP. | Patrón **Strategy** extensible (`EstrategiaPrioridadAcademica`). |
-| **Manejo de Errores** | `print(...)` por consola y retorno booleano `return False`. | Jerarquía limpia de **Excepciones de Dominio** (`ErrorValidacionSolicitud`, etc.). |
+El sistema implementa cinco operaciones funcionales verificables que conservan el 100% de su comportamiento externo entre la versión inicial y la versión refactorizada:
+
+1. **Registrar Solicitud:** Da de alta un trámite validando los datos del estudiante, calculando automáticamente la prioridad (`1-ALTA`, `2-MEDIA`, `3-BAJA`) según el tipo y urgencia, persistiendo en JSON y notificando por consola.
+2. **Cambiar Estado de Solicitud:** Permite transicionar entre estados válidos (`PENDIENTE` $\rightarrow$ `EN_PROCESO`, `RESUELTA`, `RECHAZADA`), bloqueando la reapertura de solicitudes cerradas y registrando observaciones.
+3. **Asignar Responsable y Área:** Vincula la solicitud con un agente y sector administrativo resolutivo, transicionando automáticamente de `PENDIENTE` a `EN_PROCESO`.
+4. **Buscar y Filtrar Solicitudes:** Permite consultar trámites aplicando filtros combinados por estado, tipo de solicitud y legajo del estudiante.
+5. **Generar Reporte Básico:** Calcula métricas operativas (total de trámites, desglose por estado y cantidad de prioridad alta) y las emite por consola.
+
+---
+
+## 3. Tecnologías y Herramientas Utilizadas
+
+- **Lenguaje de Programación:** Python 3.11+ (con tipado estático `typing`, estructuras inmutables `@dataclass(frozen=True)`, enumeraciones `Enum` y contratos abstractos `abc.ABC`).
+- **Persistencia de Datos:** Almacenamiento estructurado en archivo local (`solicitudes_db.json`) con datos 100% sintéticos.
+- **Pruebas y Cobertura:** Biblioteca estándar `unittest` (aplicando patrón AAA, *Stubs* en memoria y *Mocks* de interacción) y `coverage` (*Statement & Branch Coverage* del 86%).
+- **Análisis Estático y Calidad:** `pylint` (calificación mejorada a **8.09/10**) y `radon` (complejidad ciclomática reducida a **Rango A**).
+- **Control de Versiones:** Git y GitHub con flujo trazable de commits atómicos y tags por etapa.
 
 ---
 
 ## 4. Estructura del Repositorio
 
 ```text
-├── README.md                              <- Especificación, instalación y guía del proyecto.
-├── sistema_solicitudes_base.py            <- Código fuente original con deuda técnica (estado-inicial).
-├── sistema_solicitudes_refactorizado.py   <- Código refactorizado profesional (etapa-refactoring).
-├── solicitudes_db.json                    <- Archivo de persistencia física generado automáticamente.
+TPI_MTS_II/
+├── README.md                                 <- Documentación general, instalación, uso y trazabilidad.
+├── sistema_solicitudes_base.py               <- Versión inicial con deuda técnica (Tag: estado-inicial).
+├── sistema_solicitudes_refactorizado.py      <- Versión final mejorada con SOLID y Clean Code (Tag: estado-refactorizado).
+├── test_sistema_solicitudes.py               <- Suite de 10 pruebas unitarias AAA, Stubs, Mocks y regresión (Tag: etapa-pruebas).
+├── solicitudes_db.json                       <- Persistencia estructurada en JSON con datos sintéticos.
 └── docs/
-    └── diagnostico_deuda_tecnica.md       <- Inventario técnico de los 9 Code Smells diagnosticados.
+    ├── diagnostico_deuda_tecnica.md          <- Inventario técnico de los 9 Code Smells (Tag: etapa-diagnostico).
+    ├── code_review_checklist.md              <- Checklist TAC, feedback en 3 capas y dictamen en verde (Tag: etapa-docs).
+    └── adr_001_arquitectura_solid.md         <- Registro de decisión arquitectónica (ADR-001).
