@@ -3,38 +3,38 @@
 > **Universidad:** Universidad Tecnológica Nacional (UTN)  
 > **Carrera:** Tecnicatura Universitaria en Programación a Distancia (TUPaD)  
 > **Asignatura:** Metodología de Sistemas II — Comisión 12  
-> **Integrante (Entrega Individual):** Grimaldi, Emiliano — Matrícula: 102964  
-> **Estado General del Código:** `estado-refactorizado` (Calidad en Verde — 0% Regresión)
+> **Autor:** Grimaldi, Emiliano (Matrícula: 102964)  
+> **Estado General Final:** `estado-refactorizado` (Auditoría de Calidad en Verde)
 
 ---
 
-## 1. Descripción del Proyecto
+## 1. Descripción y Propósito del Trabajo
 
-El **Sistema de Gestión de Solicitudes Académicas** es un módulo de software diseñado para centralizar la recepción, clasificación por prioridad, asignación de responsables, transición de estados y generación de reportes de trámites estudiantiles (equivalencias, certificados de examen, cambios de comisión y revisiones de actas).
+Este repositorio contiene el desarrollo completo del **Trabajo Práctico Integrador (TPI)** de **Metodología de Sistemas II**, centrado en la evolución profesional de un sistema de software existente: el **Sistema de Gestión de Solicitudes Académicas**.
 
-El propósito de este repositorio es demostrar la **evolución profesional de un sistema existente**: partiendo de una versión base monolítica funcional pero con deuda técnica interna (`estado-inicial`), hasta alcanzar una arquitectura desacoplada, mantenible y extensible mediante **principios SOLID**, **Clean Code**, **Refactoring Seguro**, **pruebas automatizadas bajo el patrón AAA** y **Code Review profesional** (`estado-refactorizado`).
-
----
-
-## 2. Funcionalidades Verificables (Casos de Uso)
-
-El sistema implementa cinco operaciones funcionales verificables que conservan el 100% de su comportamiento externo entre la versión inicial y la versión refactorizada:
-
-1. **Registrar Solicitud:** Da de alta un trámite validando los datos del estudiante, calculando automáticamente la prioridad (`1-ALTA`, `2-MEDIA`, `3-BAJA`) según el tipo y urgencia, persistiendo en JSON y notificando por consola.
-2. **Cambiar Estado de Solicitud:** Permite transicionar entre estados válidos (`PENDIENTE` $\rightarrow$ `EN_PROCESO`, `RESUELTA`, `RECHAZADA`), bloqueando la reapertura de solicitudes cerradas y registrando observaciones.
-3. **Asignar Responsable y Área:** Vincula la solicitud con un agente y sector administrativo resolutivo, transicionando automáticamente de `PENDIENTE` a `EN_PROCESO`.
-4. **Buscar y Filtrar Solicitudes:** Permite consultar trámites aplicando filtros combinados por estado, tipo de solicitud y legajo del estudiante.
-5. **Generar Reporte Básico:** Calcula métricas operativas (total de trámites, desglose por estado y cantidad de prioridad alta) y las emite por consola.
+El objetivo central del proyecto es diagnosticar la **deuda técnica** y los **code smells** de una versión base monolítica (`estado-inicial`), rediseñar su arquitectura aplicando principios **SOLID** y **Clean Code**, ejecutar **refactorings seguros** (`etapa-refactoring`), validar el comportamiento mediante una **suite de 24 pruebas automatizadas bajo el patrón AAA** (`etapa-pruebas`) y auditar la entrega mediante un **Code Review profesional** guiado por Criterios de Aceptación Técnica (`etapa-docs` / `estado-refactorizado`).
 
 ---
 
-## 3. Tecnologías y Herramientas Utilizadas
+## 2. Tecnologías y Herramientas Utilizadas
 
-- **Lenguaje de Programación:** Python 3.11+ (con tipado estático `typing`, estructuras inmutables `@dataclass(frozen=True)`, enumeraciones `Enum` y contratos abstractos `abc.ABC`).
-- **Persistencia de Datos:** Almacenamiento estructurado en archivo local (`solicitudes_db.json`) con datos 100% sintéticos.
-- **Pruebas y Cobertura:** Biblioteca estándar `unittest` (aplicando patrón AAA, *Stubs* en memoria y *Mocks* de interacción) y `coverage` (*Statement & Branch Coverage* del 86%).
-- **Análisis Estático y Calidad:** `pylint` (calificación mejorada a **8.09/10**) y `radon` (complejidad ciclomática reducida a **Rango A**).
-- **Control de Versiones:** Git y GitHub con flujo trazable de commits atómicos y tags por etapa.
+- **Lenguaje:** Python 3.11+ (`typing`, `@dataclass(frozen=True)`, `Enum`, `abc.ABC`).
+- **Persistencia:** Almacenamiento estructurado en archivo JSON local (`solicitudes_db.json`).
+- **Testing y Cobertura:** Biblioteca estándar `unittest` (con *Stubs* en memoria, *Mocks* de interacción, pruebas de caracterización y de paridad) y `coverage` (*Statement & Branch Coverage*).
+- **Análisis Estático y Métricas:** `pylint` (auditoría de estilo y code smells) y `radon` (complejidad ciclomática e índice de mantenibilidad).
+- **Control de Versiones:** Git y GitHub con flujo trazable de tags por etapa e higiene de repositorio (`.gitignore` y `.gitattributes`).
+
+---
+
+## 3. Funcionalidades del Sistema
+
+El módulo gestiona cinco operaciones funcionales verificables sobre trámites académicos:
+
+1. **Registrar Solicitud:** Alta del trámite validando invariantes del estudiante y calculando la prioridad automática mediante el patrón *Strategy*.
+2. **Cambiar Estado:** Transición controlada entre estados válidos (`PENDIENTE`, `EN_PROCESO`, `RESUELTA`, `RECHAZADA`) protegiendo estados terminales y registrando observaciones.
+3. **Asignar Responsable y Área:** Vinculación de un trámite con un responsable y sector académico, transicionando automáticamente el estado a `EN_PROCESO`.
+4. **Buscar y Filtrar:** Consulta combinada de solicitudes mediante *Parameter Object* (`FiltroBusquedaSolicitud`) por estado, tipo de trámite o legajo.
+5. **Generar Reporte Operativo:** Consolidación y emisión por consola de métricas estadísticas del sistema (totales, desglose por estado y solicitudes de prioridad alta).
 
 ---
 
@@ -42,12 +42,15 @@ El sistema implementa cinco operaciones funcionales verificables que conservan e
 
 ```text
 TPI_MTS_II/
-├── README.md                                 <- Documentación general, instalación, uso y trazabilidad.
-├── sistema_solicitudes_base.py               <- Versión inicial con deuda técnica (Tag: estado-inicial).
-├── sistema_solicitudes_refactorizado.py      <- Versión final mejorada con SOLID y Clean Code (Tag: estado-refactorizado).
-├── test_sistema_solicitudes.py               <- Suite de 10 pruebas unitarias AAA, Stubs, Mocks y regresión (Tag: etapa-pruebas).
-├── solicitudes_db.json                       <- Persistencia estructurada en JSON con datos sintéticos.
+├── .gitignore                                <- Exclusión de archivos temporales, caché (__pycache__) y reportes de cobertura.
+├── .gitattributes                            <- Normalización de finales de línea y detección de lenguaje.
+├── README.md                                 <- Documentación general, instalación, ejecución y trazabilidad.
+├── sistema_solicitudes_base.py               <- Versión inicial funcional con deuda técnica (Tag: estado-inicial).
+├── sistema_solicitudes_refactorizado.py      <- Versión final desacoplada con SOLID y Clean Code (Tag: estado-refactorizado).
+├── test_sistema_solicitudes.py               <- Suite de 10 pruebas unitarias AAA, Stubs, Mocks y paridad JSON (Tag: etapa-pruebas).
+├── test_caracterizacion_base.py              <- Suite de 14 pruebas de caracterización base (CB-01..09) y contratos de error (CI-01..05).
+├── solicitudes_db.json                       <- Archivo de persistencia JSON con registros sintéticos.
 └── docs/
-    ├── diagnostico_deuda_tecnica.md          <- Inventario técnico de los 9 Code Smells (Tag: etapa-diagnostico).
+    ├── diagnostico_deuda_tecnica.md          <- Inventario técnico de los 9 Code Smells detectados (Tag: etapa-diagnostico).
     ├── code_review_checklist.md              <- Checklist TAC, feedback en 3 capas y dictamen en verde (Tag: etapa-docs).
     └── adr_001_arquitectura_solid.md         <- Registro de decisión arquitectónica (ADR-001).
