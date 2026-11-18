@@ -7,7 +7,6 @@
 > **Autor:** Grimaldi, Emiliano (Matrícula: 102964)  
 > **Modalidad:** Entrega individual con justificación académica y laboral (ver Sección 11)  
 > **Repositorio Oficial:** [https://github.com/EmilianoGrimaldi/TPI_MTS_II](https://github.com/EmilianoGrimaldi/TPI_MTS_II)  
-> **Video Explicativo y Defensa:** [Enlace al Video de Demostración](https://youtu.be/TU_VIDEO_AQUI) *(10 a 15 min, cámara encendida, voz propia y código en vivo)*  
 > **Estado General Final:** `estado-refactorizado` / `estadorefactorizado` (Auditoría Técnica en Verde — 24/24 Tests OK)
 
 ---
@@ -250,8 +249,6 @@ Para un análisis técnico en profundidad, consulte los documentos complementari
 - **Justificación:** Por incompatibilidad de horarios laborales y cursada asincrónica a distancia para coordinar entregas sincrónicas grupales, se optó por el desarrollo individual integral.
 - **Autor y Responsable Técnico:** Emiliano Grimaldi (Matrícula: 102964 — Comisión 12).  
   El autor asumió de forma integral el 100 % del relevamiento del sistema base, diagnóstico de deuda técnica, diseño arquitectónico SOLID, programación de refactorings, desarrollo de la suite de 24 pruebas, documentación técnica y defensa en video.
-- **Video Explicativo y Demostración:** [Enlace al Video de Defensa](https://youtu.be/TU_VIDEO_AQUI)  
-  *(Grabado con cámara encendida mostrando rostro y nombre completo, voz propia sin IA, explicando problema, sistema base, smells, refactorings, ejecución de pruebas en consola y recorrido del repositorio).*
 
 ---
 

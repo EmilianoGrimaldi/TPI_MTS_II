@@ -1,0 +1,5 @@
+# Normalizacion de finales de linea y deteccion de lenguaje
+* text=auto
+*.py text eol=lf
+*.json text eol=lf
+*.md text eol=lf
